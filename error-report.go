@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/satori/go.uuid"
 	"net/http"
 	"runtime/debug"
 	"sync"
 	"time"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 // It will fmt error log into console.
@@ -36,7 +37,7 @@ type Reporter struct {
 	l1   sync.RWMutex
 
 	HandleMode map[string]func(e error, context map[string]interface{})
-	l2 sync.RWMutex
+	l2         sync.RWMutex
 
 	renameOfContext string
 }
@@ -118,11 +119,11 @@ func NewReporter(mode string) *Reporter {
 	return &Reporter{
 		c: &http.Client{Timeout: 15 * time.Second},
 
-		mode: mode,
-		Url:  make(map[string]string, 0),
+		mode:       mode,
+		Url:        make(map[string]string, 0),
 		HandleMode: make(map[string]func(e error, context map[string]interface{})),
-		l1: sync.RWMutex{},
-		l2: sync.RWMutex{},
+		l1:         sync.RWMutex{},
+		l2:         sync.RWMutex{},
 	}
 }
 
@@ -182,7 +183,7 @@ L:
 			handler = DefaultHandler
 		}
 	}()
-	u, _ := uuid.NewV4()
+	u := uuid.NewV4()
 	errorUUID := u.String()
 	context["error_uuid"] = errorUUID
 	handler(Wrap(e), context)
@@ -207,7 +208,7 @@ L:
 
 	var tmp = make(map[string]interface{}, 0)
 
-	u, _ := uuid.NewV4()
+	u := uuid.NewV4()
 	errUUID := u.String()
 	tmp["error_uuid"] = errUUID
 	tmp["message"] = Wrap(e).Error()
@@ -234,7 +235,7 @@ L:
 
 	var tmp = make(map[string]interface{}, 0)
 
-	u, _ := uuid.NewV4()
+	u := uuid.NewV4()
 	errUUID := u.String()
 	tmp["error_uuid"] = errUUID
 	tmp["message"] = Wrap(e).Error()
@@ -261,7 +262,7 @@ L:
 
 	var tmp = make(map[string]interface{}, 0)
 
-	u, _ := uuid.NewV4()
+	u := uuid.NewV4()
 	errUUID := u.String()
 	tmp["error_uuid"] = errUUID
 	tmp["message"] = Wrap(e).Error()
@@ -288,7 +289,7 @@ L:
 
 	var tmp = make(map[string]interface{}, 0)
 
-	u, _ := uuid.NewV4()
+	u := uuid.NewV4()
 	errUUID := u.String()
 	tmp["error_uuid"] = errUUID
 	tmp["message"] = Wrap(e).Error()
